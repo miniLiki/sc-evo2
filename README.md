@@ -6,7 +6,6 @@
  
  # 二、任务进度
  任务进度见下图。
-![技术路线](https://github.com/user-attachments/assets/774c84f3-ec35-42f8-80d7-2c4f6e05bd9c)
 其中绿色代表已完成，蓝色代表正在进行，橙色代表未完成。我将按照图中从左到右，从上到下的顺序讲：
 ##任务：
 有两个任务：下一个词预测和调控元件识别。
@@ -79,7 +78,7 @@ Evo2的直接微调可以参考[教程](https://github.com/NVIDIA/bionemo-framew
 
 infer任务(序列生成)的输出是一系列生成的DNA序列。
 
-predict任务可以通过**--output-log-prob-seqs **参数来选择**token logits**模式（输出为每个序列提供了逐个位置的预测信息）或**log probabilities**模式（输出为每个完整序列提供一个单一的分数（对数概率），代表了模型判断下该序列的适应度）。
+predict任务可以通过--output-log-prob-seqs 参数来选择**token logits**模式（输出为每个序列提供了逐个位置的预测信息）或**log probabilities**模式（输出为每个完整序列提供一个单一的分数（对数概率），代表了模型判断下该序列的适应度）。
 
 命令示例为：
 ```
@@ -163,5 +162,6 @@ os.environ['USERNAME'] = 'user'
  # 四、展望
 
  我之前运行的结果来看，零样本下的预测效果很差，微调后也只改善了一点，可能是甘蔗的高倍体复杂的特性导致。然后我去问了朱博士，他的解决方法给的比较具体，也就是：不止要输入[官网](https://sugarcane.gxu.edu.cn/scdb/)上Genome基因型文件，也要将注释文件等信息加入到数据集中，合成一个多维矩阵喂给evo2进行训练。（由于甘蔗数据大而难，所以可以先用拟南芥验证数据集划分方式）。既建立一个能充分增强信息利用能力的数据集划分的方式。见下图：
- <img width="712" alt="b4d93840b8fbc0504aeea6e21c1ac265" src="https://github.com/user-attachments/assets/e22ed375-9e1f-4b27-ae82-07103ac53b90" />
+<img width="712" alt="9ec4981707003b062d43d377685f48f2" src="https://github.com/user-attachments/assets/201581b7-b13c-48de-8a40-027b3bfa25ba" />
+
 
