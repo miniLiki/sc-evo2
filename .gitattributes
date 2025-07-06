@@ -1,0 +1,2 @@
+*.fasta filter=lfs diff=lfs merge=lfs -text
+mapping/lightning_logs/*.tfevents.* filter=lfs diff=lfs merge=lfs -text

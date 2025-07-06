@@ -1,0 +1,97 @@
+=== 基于GFF注释的生物学截断报告 ===
+
+输入文件:
+  序列文件: sequence_truncation/XTT22_test.fa
+  注释文件: sequence_truncation/XTT22.v2023.gff3.gz
+  最大长度限制: 20,000 bp
+
+截断结果统计:
+  总功能单元: 45683
+  gene_cluster: 16546 个
+  gene_with_regulatory: 26982 个
+  gene_only: 2155 个
+
+生物学意义说明:
+
+    ✅ 完整基因单元 (基因+调控区域):
+       - 生物学意义: 包含启动子、基因编码区、终止子的完整功能单元
+       - Predict任务: 可分析基因表达调控、启动子强度、转录效率
+       - Inference任务: 可生成具有调控特征的功能基因序列
+       - 应用价值: 基因治疗设计、合成生物学、转录调控研究
+                
+
+    ⚠️ 仅基因编码区:
+       - 生物学意义: 仅包含蛋白编码序列，缺少调控元件
+       - Predict任务: 适合蛋白功能预测、编码序列优化分析
+       - Inference任务: 可生成编码蛋白的DNA序列
+       - 限制: 无法分析转录调控，启动子预测意义有限
+                
+
+    ✅ 基因簇:
+       - 生物学意义: 功能相关基因的协调表达单元
+       - Predict任务: 可分析基因共调控、代谢通路完整性
+       - Inference任务: 可生成功能相关的基因组合
+       - 应用价值: 代谢工程、基因簇转移、进化分析
+                
+
+任务建议:
+✅ 建议执行 Predict 和 Inference 任务:
+   - 大部分序列保持了生物学完整性
+   - 适合研究基因调控和功能预测
+   - 生成的序列具有明确的生物学背景
+
+详细单元列表:
+----------------------------------------------------------------------------------------------------
+单元ID                 类型                   染色体        长度         描述                            
+----------------------------------------------------------------------------------------------------
+cluster_Sh_So10G0014645_Sh_So10G0014646 gene_cluster         Chr10G     6153       基因簇包含2个功能单元: Sh_So10G0014645, 
+Sh_So10G0014647      gene_with_regulatory Chr10G     8750       基因 Sh_So10G0014647 及其调控区域     
+Sh_So10G0014648      gene_with_regulatory Chr10G     6036       基因 Sh_So10G0014648 及其调控区域     
+cluster_Sh_So10G0014649_Sh_So10G0014650_Sh_So10G0014651 gene_cluster         Chr10G     13258      基因簇包含3个功能单元: Sh_So10G0014649, 
+Sh_So10G0014652      gene_with_regulatory Chr10G     11003      基因 Sh_So10G0014652 及其调控区域     
+cluster_Sh_So10G0014653_Sh_So10G0014654_Sh_So10G0014655 gene_cluster         Chr10G     18987      基因簇包含3个功能单元: Sh_So10G0014653, 
+cluster_Sh_So10G0014656_Sh_So10G0014657_Sh_So10G0014658 gene_cluster         Chr10G     17110      基因簇包含3个功能单元: Sh_So10G0014656, 
+Sh_So10G0014659      gene_only            Chr10G     21711      基因 Sh_So10G0014659 (仅编码区，原长度超限
+cluster_Sh_So10G0014660_Sh_So10G0014661_Sh_So10G0014662 gene_cluster         Chr10G     15491      基因簇包含3个功能单元: Sh_So10G0014660, 
+Sh_So10G0014663      gene_with_regulatory Chr10G     16054      基因 Sh_So10G0014663 及其调控区域     
+cluster_Sh_So10G0014664_Sh_So10G0014665 gene_cluster         Chr10G     16085      基因簇包含2个功能单元: Sh_So10G0014664, 
+cluster_Sh_So10G0014666_Sh_So10G0014667 gene_cluster         Chr10G     19380      基因簇包含2个功能单元: Sh_So10G0014666, 
+cluster_Sh_So10G0014668_Sh_So10G0014669 gene_cluster         Chr10G     15776      基因簇包含2个功能单元: Sh_So10G0014668, 
+Sh_So10G0014670      gene_with_regulatory Chr10G     5662       基因 Sh_So10G0014670 及其调控区域     
+Sh_So10G0014671      gene_with_regulatory Chr10G     13009      基因 Sh_So10G0014671 及其调控区域     
+cluster_Sh_So10G0014672_Sh_So10G0014673 gene_cluster         Chr10G     13318      基因簇包含2个功能单元: Sh_So10G0014672, 
+cluster_Sh_So10G0014674_Sh_So10G0014675 gene_cluster         Chr10G     16967      基因簇包含2个功能单元: Sh_So10G0014674, 
+Sh_So10G0014676      gene_with_regulatory Chr10G     6498       基因 Sh_So10G0014676 及其调控区域     
+cluster_Sh_So10G0014677_Sh_So10G0014678 gene_cluster         Chr10G     12360      基因簇包含2个功能单元: Sh_So10G0014677, 
+cluster_Sh_So10G0014679_Sh_So10G0014680_Sh_So10G0014681 gene_cluster         Chr10G     15094      基因簇包含4个功能单元: Sh_So10G0014679, 
+Sh_So10G0014683      gene_with_regulatory Chr10G     4739       基因 Sh_So10G0014683 及其调控区域     
+Sh_So10G0014684      gene_with_regulatory Chr10G     5541       基因 Sh_So10G0014684 及其调控区域     
+Sh_So10G0014685      gene_with_regulatory Chr10G     7228       基因 Sh_So10G0014685 及其调控区域     
+Sh_So10G0014686      gene_with_regulatory Chr10G     3930       基因 Sh_So10G0014686 及其调控区域     
+Sh_So10G0014687      gene_with_regulatory Chr10G     4149       基因 Sh_So10G0014687 及其调控区域     
+cluster_Sh_So10G0014688_Sh_So10G0014689 gene_cluster         Chr10G     11041      基因簇包含2个功能单元: Sh_So10G0014688, 
+Sh_So10G0014690      gene_with_regulatory Chr10G     5270       基因 Sh_So10G0014690 及其调控区域     
+cluster_Sh_So10G0014691_Sh_So10G0014692 gene_cluster         Chr10G     8878       基因簇包含2个功能单元: Sh_So10G0014691, 
+Sh_So10G0014693      gene_with_regulatory Chr10G     3339       基因 Sh_So10G0014693 及其调控区域     
+cluster_Sh_So10G0014694_Sh_So10G0014695 gene_cluster         Chr10G     15476      基因簇包含2个功能单元: Sh_So10G0014694, 
+Sh_So10G0014696      gene_with_regulatory Chr10G     3642       基因 Sh_So10G0014696 及其调控区域     
+Sh_So10G0014697      gene_with_regulatory Chr10G     9986       基因 Sh_So10G0014697 及其调控区域     
+cluster_Sh_So10G0014698_Sh_So10G0014699 gene_cluster         Chr10G     9337       基因簇包含2个功能单元: Sh_So10G0014698, 
+Sh_So10G0014700      gene_with_regulatory Chr10G     9668       基因 Sh_So10G0014700 及其调控区域     
+Sh_So10G0014701      gene_with_regulatory Chr10G     9359       基因 Sh_So10G0014701 及其调控区域     
+cluster_Sh_So10G0014702_Sh_So10G0014703 gene_cluster         Chr10G     17055      基因簇包含2个功能单元: Sh_So10G0014702, 
+Sh_So10G0014704      gene_with_regulatory Chr10G     6159       基因 Sh_So10G0014704 及其调控区域     
+cluster_Sh_So10G0014705_Sh_So10G0014706 gene_cluster         Chr10G     13062      基因簇包含2个功能单元: Sh_So10G0014705, 
+Sh_So10G0014707      gene_with_regulatory Chr10G     8768       基因 Sh_So10G0014707 及其调控区域     
+Sh_So10G0014708      gene_with_regulatory Chr10G     4197       基因 Sh_So10G0014708 及其调控区域     
+Sh_So10G0014709      gene_with_regulatory Chr10G     13061      基因 Sh_So10G0014709 及其调控区域     
+Sh_So10G0014710      gene_with_regulatory Chr10G     9471       基因 Sh_So10G0014710 及其调控区域     
+Sh_So10G0014711      gene_with_regulatory Chr10G     9715       基因 Sh_So10G0014711 及其调控区域     
+Sh_So10G0014712      gene_with_regulatory Chr10G     8148       基因 Sh_So10G0014712 及其调控区域     
+Sh_So10G0014713      gene_only            Chr10G     29907      基因 Sh_So10G0014713 (仅编码区，原长度超限
+Sh_So10G0014714      gene_with_regulatory Chr10G     9507       基因 Sh_So10G0014714 及其调控区域     
+Sh_So10G0014715      gene_with_regulatory Chr10G     14908      基因 Sh_So10G0014715 及其调控区域     
+cluster_Sh_So10G0014716_Sh_So10G0014717_Sh_So10G0014718 gene_cluster         Chr10G     11759      基因簇包含3个功能单元: Sh_So10G0014716, 
+Sh_So10G0014719      gene_with_regulatory Chr10G     4489       基因 Sh_So10G0014719 及其调控区域     
+Sh_So10G0014720      gene_with_regulatory Chr10G     9564       基因 Sh_So10G0014720 及其调控区域     
+... 还有 45633 个单元

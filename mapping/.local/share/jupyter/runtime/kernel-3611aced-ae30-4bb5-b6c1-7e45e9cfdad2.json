@@ -1,0 +1,13 @@
+{
+  "shell_port": 50829,
+  "iopub_port": 34383,
+  "stdin_port": 48623,
+  "control_port": 36461,
+  "hb_port": 49639,
+  "ip": "127.0.0.1",
+  "key": "486e24e1-6655e0e94a6202057002696f",
+  "transport": "tcp",
+  "signature_scheme": "hmac-sha256",
+  "kernel_name": "python3",
+  "jupyter_session": "/workspace/finetuning_fixed.ipynb"
+}
