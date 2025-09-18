@@ -2,17 +2,16 @@
 
 # 一、任务简介
   
-  该任务旨在通过构建高质量的数据集、Lora微调等手段，构建一个用于**甘蔗**领域的**下一个词预测/调控元件识别**任务的基因组**基础大模型**，并对模型进行**评估**。任务**近一点的目标**是训练一个效果还不错的甘蔗基础模型；**远一点的目标**是提出一个benchmark/范式：我们自己定义甘蔗数据集的制作方式、评估方式，并给出训练好的模型（这个目标可能对领域发展更有贡献）。第二、三章（**任务进度、代码运行**）主要围绕近一点的目标来讲。第四章（**展望**）讲远一点的目标。
+  该任务旨在使用构建高质量的甘蔗数据集对Evo2模型进行微调，以建立用于**甘蔗**领域的基因组**生成**任务**大模型**。任务**近一点的目标**是把原始数据喂给Evo2，加上各种trick，训练一个效果还不错的甘蔗模型；**远一点的目标**是提出一个benchmark/范式：我们自己定义甘蔗数据集的制作方式、评估方式，并给出训练好的模型。第二、三章（**任务进度、代码运行**）主要围绕近一点的目标来讲。第四章（**展望**）讲远一点的目标。
  
  # 二、任务进度
  任务进度见下图。
  ![技术路线](https://github.com/user-attachments/assets/ea22ae84-346f-4b62-a752-dd09bdac7ffa)
-其中绿色代表已完成，蓝色代表正在进行，橙色代表未完成。我将按照图中从左到右，从上到下的顺序讲：
+其中绿色代表已完成，蓝色代表正在进行，橙色代表未完成。
 ## 任务：
-有两个任务：下一个词预测和调控元件识别。
+有两个任务：下一个词预测（生成）和调控元件识别。由于Evo2是基于自回归建模，所以调控元件识别本质上也是生成式的打分，所以可以先完成 数据集制作比较简单的生成任务，看看效果。
 
 
-我的想法是先将下一个词预测完成。下一个词预测的技术部分打通后，再建立调控元件识别的数据集，然后，只需要对训练评估部分做出改动就能完成调控元件识别了。所以，下面的进度只是下一个词预测的进度，调控元件识别部分还没开始。
 ## 目录结构
 
 ```
@@ -41,27 +40,38 @@ mapping/
 └── nemo2_evo2_*/               # NeMo2格式模型
 XTT22_prediction_0shot.py        #零样本模型的评估代码
 XTT22_prediction_0shot.py.png    #评估代码生成的图
-data_ana.py                      # 数据分析并绘图的**示例**
+data_ana.py                      # 数据分析并绘图的示例
 ```
-## 研究阶段1：数据集划分
-数据集：为了用到更全面的基因信息，我用的是[官网](https://sugarcane.gxu.edu.cn/scdb/)上的XTT22、R570、ZZ1。原始数据和基因注释文件在~/workspace/mapping/data下。
-但我上次在传输文件时意外中断了，所以需要从官网重新下载对应名字的数据集放上去。
+## 研究阶段1：数据集建立
+
+**我用的数据集**：我用的是[官网](https://sugarcane.gxu.edu.cn/scdb/)上的XTT22、R570、ZZ1。原始数据和基因注释文件在~/workspace/mapping/data下。
+需要从官网重新下载对应名字的数据集放上去。
+见下图：
+<img width="712" alt="9ec4981707003b062d43d377685f48f2" src="https://github.com/user-attachments/assets/201581b7-b13c-48de-8a40-027b3bfa25ba" />
 
 在重新下载官网数据集后，把涉及到数据的代码（例如finetuning.ipynb），把带有_train.fa、_test.fa的都换成原始的XTT22.genome.fa，或者ZZ1或R570等。例如：
 
 **concat_path = "XTT22_train.fa"改成concat_path = "XTT22.genome.fa"**
 
-数据分析及可视化：位于~/workspace/data_ana.py。这只是一个示例，有以下三点未完成：
+ 之前运行的结果是：零样本下的预测效果很差，微调后也只改善了一点，可能是甘蔗的高倍体复杂的特性导致。
+ 
+**考虑改善数据集**：这个可能是该任务的核心难题，如何将异源多倍体数据喂给Evo2 以更有效地利用其模式识别能力。
 
-1.由于读取fasta数据文件太耗时了，所以这里用的只是**虚拟数据**。
+参考意见：不止要输入[Genome基因型文件](https://sugarcane.gxu.edu.cn/scdb/)，也要将注释文件等信息加入到数据集中，合成一个多维矩阵喂给evo2进行训练。
 
-2.这里同时生成了五张图片并用python**自动排版**，很丑，所以可以考虑给他们分成五个图运行然后手动排版。
+但这样有一个缺点：现在已经证明了Evo2可以完成基因组的通用模式识别任务，我们是将Evo2作为Base Model来做SFT，最关心的应该是如何完成表征迁移，而不是重构陌生的数据结构进行训练。所以我觉得要在做数据的时候要权衡 有效数据的整合和对齐。
 
-3.有些数据分析图和我们后面的研究不相关，所以**冗余**了，可以删除或改进他们。
+
+数据分析及可视化：位于~/workspace/data_ana.py。这只是一个示例，用的只是虚拟数据。
+
 
 ## 研究阶段2：实现Evo2微调
 Evo2的直接微调可以参考[教程](https://github.com/NVIDIA/bionemo-framework/blob/ca16c2acf9bf813d020b6d1e2d4e1240cfef6a69/docs/docs/user-guide/examples/bionemo-evo2/fine-tuning-tutorial.ipynb)实现。这里的任务就是下一个词预测，并且训练的逻辑基本遵循Evo2论文。
-我的运行在~/workspace/mapping/finetuning.ipynb文件前半部分实现，即命令：
+
+我之前在代码中完成了Lora集成，而9月初的Evo2官方已经集成了Lora微调功能，所以可以直接参考官方实现，不一定用我的代码。
+<img width="1440" height="330" alt="21607b02d2bed5d71e68bc85b3879abd" src="https://github.com/user-attachments/assets/5275062d-99ae-44eb-adc4-a20616554282" />
+
+~~我的运行在~/workspace/mapping/finetuning.ipynb文件前半部分实现，即命令：
 ```
 !train_evo2 \
 ......
@@ -70,12 +80,13 @@ Evo2的直接微调可以参考[教程](https://github.com/NVIDIA/bionemo-framew
 ```
 !cp /workspace/hyena_modified.py /usr/local/lib/python3.12/dist-packages/nemo/collections/llm/gpt/model/hyena.py
 ```
-在使用之前，从[huggingface](https://huggingface.co/arcinstitute/savanna_evo2_1b_base/tree/main)下载模型并保存到~/workspace/mapping/savanna_evo2_1b_base文件夹，也可以像[教程](https://github.com/NVIDIA/bionemo-framework/blob/ca16c2acf9bf813d020b6d1e2d4e1240cfef6a69/docs/docs/user-guide/examples/bionemo-evo2/fine-tuning-tutorial.ipynb)一样直接在代码中下载。
+在使用之前，从[huggingface](https://huggingface.co/arcinstitute/savanna_evo2_1b_base/tree/main)下载模型并保存到~/workspace/mapping/savanna_evo2_1b_base文件夹，也可以像[教程](https://github.com/NVIDIA/bionemo-framework/blob/ca16c2acf9bf813d020b6d1e2d4e1240cfef6a69/docs/docs/user-guide/examples/bionemo-evo2/fine-tuning-tutorial.ipynb)一样直接在代码中下载。~~
+
 ## 研究阶段3：设计评估指标并可视化
-这里用的也是切割的数据逐段输入gpu，否则会报显存。代码和切割后的数据和注释文档都在~/workspace/mapping/sequence_truncation文件夹下。由于第一步重新下载了数据，所以这一步也要重新做一下：
+这里用的也是切割的数据逐段输入gpu，否则会报显存。由于第一步重新下载了数据，所以这一步也要重新做一下：代码和切割后的数据和注释文档放在~/workspace/mapping/sequence_truncation/。
 
 
-对于下一个词预测任务的评估，我的运行在~/workspace/mapping/finetuning.ipynb文件后半部分实现。有predict和inference（简称infer）两种评估方式。详见[nemo框架的评估源代码](https://github.com/NVIDIA/bionemo-framework/tree/main/sub-packages/bionemo-evo2/src/bionemo/evo2/run)下的infer和predict。
+下一个词预测任务的评估在~/workspace/mapping/finetuning.ipynb文件后半部分实现。有predict和inference（简称infer）两种评估方式。详见[nemo框架的评估源代码](https://github.com/NVIDIA/bionemo-framework/tree/main/sub-packages/bionemo-evo2/src/bionemo/evo2/run)下的infer和predict。
 
 infer任务(序列生成)的输出是一系列生成的DNA序列。
 
@@ -147,7 +158,7 @@ os.environ['USERNAME'] = 'user'
  
 ## 研究阶段4：Lora微调
 
-我将lora实现在临时训练代码中。我的临时训练代码位于~/workspace/mapping/bionemo_train.py下，但请注意这段代码并不直接用于训练，真正的训练代码位于[docker容器配置好的底层环境](https://github.com/NVIDIA/bionemo-framework/tree/main/sub-packages/bionemo-evo2/src/bionemo/evo2/run)中。所以，我在~/workspace/mapping/finetuning.ipynb的中间部分用
+~~我将lora实现在临时训练代码中。我的临时训练代码位于~/workspace/mapping/bionemo_train.py下，但请注意这段代码并不直接用于训练，真正的训练代码位于[docker容器配置好的底层环境](https://github.com/NVIDIA/bionemo-framework/tree/main/sub-packages/bionemo-evo2/src/bionemo/evo2/run)中。所以，我在~/workspace/mapping/finetuning.ipynb的中间部分用
 ```
 !cp /workspace/bionemo_train.py /usr/local/lib/python3.12/dist-packages/bionemo/evo2/run/train.py
 ```
@@ -158,11 +169,6 @@ os.environ['USERNAME'] = 'user'
 
  # 三、代码运行
  
- 我是在Docker容器上运行的。但影响服务器的安全。如果允许继续使用Docker，我后面把Docker启动的命令发给董老师，如果能使用Docker容器，要记得**定期清理启动缓存**。如果不使用Docker，也可以尝试按照[bionemo官网文件](https://github.com/NVIDIA/bionemo-framework/blob/main/Dockerfile)配置环境。
-
- # 四、展望
-
- 我之前运行的结果来看，零样本下的预测效果很差，微调后也只改善了一点，可能是甘蔗的高倍体复杂的特性导致。然后我去问了朱博士，他的解决方法给的比较具体，也就是：不止要输入[官网](https://sugarcane.gxu.edu.cn/scdb/)上Genome基因型文件，也要将注释文件等信息加入到数据集中，合成一个多维矩阵喂给evo2进行训练。（由于甘蔗数据大而难，所以可以先用拟南芥验证数据集划分方式）。既建立一个能充分增强信息利用能力的数据集划分的方式。见下图：
-<img width="712" alt="9ec4981707003b062d43d377685f48f2" src="https://github.com/user-attachments/assets/201581b7-b13c-48de-8a40-027b3bfa25ba" />
+ 我是在Docker容器上运行的。但影响服务器的安全。如果不使用Docker，也可以尝试按照[bionemo官网文件](https://github.com/NVIDIA/bionemo-framework/blob/main/Dockerfile)配置环境。
 
 
