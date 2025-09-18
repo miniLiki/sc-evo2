@@ -164,6 +164,6 @@ os.environ['USERNAME'] = 'user'
  # 三、代码运行
  
  我是在Docker容器上运行的。但影响服务器的安全。如果不使用Docker，也可以尝试按照[bionemo官网文件](https://github.com/NVIDIA/bionemo-framework/blob/main/Dockerfile)配置环境。
-见下图：
+
 <img width="712" alt="9ec4981707003b062d43d377685f48f2" src="https://github.com/user-attachments/assets/201581b7-b13c-48de-8a40-027b3bfa25ba" />
 
