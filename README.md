@@ -7,10 +7,9 @@
  # 二、任务进度
  任务进度见下图。
  ![技术路线](https://github.com/user-attachments/assets/ea22ae84-346f-4b62-a752-dd09bdac7ffa)
-其中绿色代表已完成，蓝色代表正在进行，橙色代表未完成。
+
 ## 任务：
 有两个任务：下一个词预测（生成）和调控元件识别。由于Evo2是基于自回归建模，所以调控元件识别本质上也是生成式的打分，所以可以先完成 数据集制作比较简单的生成任务，看看效果。
-
 
 ## 目录结构
 
@@ -154,14 +153,14 @@ os.environ['USERNAME'] = 'user'
  
 ## 研究阶段4：Lora微调
 
-~~我将lora实现在临时训练代码中。我的临时训练代码位于~/workspace/mapping/bionemo_train.py下，但请注意这段代码并不直接用于训练，真正的训练代码位于[docker容器配置好的底层环境](https://github.com/NVIDIA/bionemo-framework/tree/main/sub-packages/bionemo-evo2/src/bionemo/evo2/run)中。所以，我在~/workspace/mapping/finetuning.ipynb的中间部分用~~
+~~我将lora实现在临时训练代码中。我的临时训练代码位于~~~/workspace/mapping/bionemo_train.py下，~~但请注意这段代码并不直接用于训练，真正的训练代码位于~~[docker容器配置好的底层环境](https://github.com/NVIDIA/bionemo-framework/tree/main/sub-packages/bionemo-evo2/src/bionemo/evo2/run)中。所以，我在~/workspace/mapping/finetuning.ipynb的中间部分用。
 ```
 !cp /workspace/bionemo_train.py /usr/local/lib/python3.12/dist-packages/bionemo/evo2/run/train.py
 ```
 ~~将临时训练代码同步到真正的训练代码中。每次更改临时训练代码都要执行这个操作。所以，可以通过改变bionemo_train代码，并同步到真实训练代码中，以实现**改变lora的目标层**或者改变其他训练逻辑。~~
 
 ## 研究阶段5：超参数优化
-这个阶段可以说是训练调参阶段，可以使用optuna库的自动调参框架。训练完成之后，就可以将模型加载到**研究阶段3**的评估框架中进行评估了。
+可以使用optuna库的自动调参框架。
 
  # 三、代码运行
  
