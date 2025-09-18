@@ -71,16 +71,12 @@ Evo2的直接微调可以参考[教程](https://github.com/NVIDIA/bionemo-framew
 我之前在代码中完成了Lora集成，而9月初的Evo2官方已经集成了Lora微调功能，所以可以直接参考官方实现，不一定用我的代码。
 <img width="1440" height="330" alt="21607b02d2bed5d71e68bc85b3879abd" src="https://github.com/user-attachments/assets/5275062d-99ae-44eb-adc4-a20616554282" />
 
-~~我的运行在~/workspace/mapping/finetuning.ipynb文件前半部分实现，即命令：
-```
+我的运行在~/workspace/mapping/finetuning.ipynb文件前半部分实现，即命令：
 !train_evo2 \
 ......
-```
 如果训练时torch报错权重无法更改，运行finetuning.ipynb中的：
-```
 !cp /workspace/hyena_modified.py /usr/local/lib/python3.12/dist-packages/nemo/collections/llm/gpt/model/hyena.py
-```
-在使用之前，从[huggingface](https://huggingface.co/arcinstitute/savanna_evo2_1b_base/tree/main)下载模型并保存到~/workspace/mapping/savanna_evo2_1b_base文件夹，也可以像[教程](https://github.com/NVIDIA/bionemo-framework/blob/ca16c2acf9bf813d020b6d1e2d4e1240cfef6a69/docs/docs/user-guide/examples/bionemo-evo2/fine-tuning-tutorial.ipynb)一样直接在代码中下载。~~
+在使用之前，从[huggingface](https://huggingface.co/arcinstitute/savanna_evo2_1b_base/tree/main)下载模型并保存到~/workspace/mapping/savanna_evo2_1b_base文件夹，也可以像[教程](https://github.com/NVIDIA/bionemo-framework/blob/ca16c2acf9bf813d020b6d1e2d4e1240cfef6a69/docs/docs/user-guide/examples/bionemo-evo2/fine-tuning-tutorial.ipynb)一样直接在代码中下载。
 
 ## 研究阶段3：设计评估指标并可视化
 这里用的也是切割的数据逐段输入gpu，否则会报显存。由于第一步重新下载了数据，所以这一步也要重新做一下：代码和切割后的数据和注释文档放在~/workspace/mapping/sequence_truncation/。
@@ -158,11 +154,11 @@ os.environ['USERNAME'] = 'user'
  
 ## 研究阶段4：Lora微调
 
-~~我将lora实现在临时训练代码中。我的临时训练代码位于~/workspace/mapping/bionemo_train.py下，但请注意这段代码并不直接用于训练，真正的训练代码位于[docker容器配置好的底层环境](https://github.com/NVIDIA/bionemo-framework/tree/main/sub-packages/bionemo-evo2/src/bionemo/evo2/run)中。所以，我在~/workspace/mapping/finetuning.ipynb的中间部分用
+~~我将lora实现在临时训练代码中。我的临时训练代码位于~/workspace/mapping/bionemo_train.py下，但请注意这段代码并不直接用于训练，真正的训练代码位于[docker容器配置好的底层环境](https://github.com/NVIDIA/bionemo-framework/tree/main/sub-packages/bionemo-evo2/src/bionemo/evo2/run)中。所以，我在~/workspace/mapping/finetuning.ipynb的中间部分用~~
 ```
 !cp /workspace/bionemo_train.py /usr/local/lib/python3.12/dist-packages/bionemo/evo2/run/train.py
 ```
-将临时训练代码同步到真正的训练代码中。每次更改临时训练代码都要执行这个操作。所以，可以通过改变bionemo_train代码，并同步到真实训练代码中，以实现**改变lora的目标层**或者改变其他训练逻辑。
+~~将临时训练代码同步到真正的训练代码中。每次更改临时训练代码都要执行这个操作。所以，可以通过改变bionemo_train代码，并同步到真实训练代码中，以实现**改变lora的目标层**或者改变其他训练逻辑。~~
 
 ## 研究阶段5：超参数优化
 这个阶段可以说是训练调参阶段，可以使用optuna库的自动调参框架。训练完成之后，就可以将模型加载到**研究阶段3**的评估框架中进行评估了。
