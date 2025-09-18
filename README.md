@@ -45,8 +45,7 @@ data_ana.py                      # 数据分析并绘图的示例
 
 **我用的数据集**：我用的是[官网](https://sugarcane.gxu.edu.cn/scdb/)上的XTT22、R570、ZZ1。原始数据和基因注释文件在~/workspace/mapping/data下。
 需要从官网重新下载对应名字的数据集放上去。
-见下图：
-<img width="712" alt="9ec4981707003b062d43d377685f48f2" src="https://github.com/user-attachments/assets/201581b7-b13c-48de-8a40-027b3bfa25ba" />
+
 
 在重新下载官网数据集后，把涉及到数据的代码（例如finetuning.ipynb），把带有_train.fa、_test.fa的都换成原始的XTT22.genome.fa，或者ZZ1或R570等。例如：
 
@@ -165,5 +164,6 @@ os.environ['USERNAME'] = 'user'
  # 三、代码运行
  
  我是在Docker容器上运行的。但影响服务器的安全。如果不使用Docker，也可以尝试按照[bionemo官网文件](https://github.com/NVIDIA/bionemo-framework/blob/main/Dockerfile)配置环境。
-
+见下图：
+<img width="712" alt="9ec4981707003b062d43d377685f48f2" src="https://github.com/user-attachments/assets/201581b7-b13c-48de-8a40-027b3bfa25ba" />
 
