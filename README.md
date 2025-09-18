@@ -151,13 +151,13 @@ os.environ['USERNAME'] = 'user'
     * 按对数概率从高到低排序序列表格。
     * 快速识别模型判断的“最佳”和“最差”序列，用于后续实验验证。
  
-## 研究阶段4：Lora微调
+~~## 研究阶段4：Lora微调~~
 
-~~我将lora实现在临时训练代码中。我的临时训练代码位于~~~/workspace/mapping/bionemo_train.py下，~~但请注意这段代码并不直接用于训练，真正的训练代码位于~~[docker容器配置好的底层环境](https://github.com/NVIDIA/bionemo-framework/tree/main/sub-packages/bionemo-evo2/src/bionemo/evo2/run)中。所以，我在~/workspace/mapping/finetuning.ipynb的中间部分用。
+我将lora实现位于~/workspace/mapping/bionemo_train.py，这段代码并不直接用于训练，真正的训练代码位于[docker容器配置好的底层环境](https://github.com/NVIDIA/bionemo-framework/tree/main/sub-packages/bionemo-evo2/src/bionemo/evo2/run)中。所以，我在~/workspace/mapping/finetuning.ipynb的中间部分用。
 ```
 !cp /workspace/bionemo_train.py /usr/local/lib/python3.12/dist-packages/bionemo/evo2/run/train.py
 ```
-~~将临时训练代码同步到真正的训练代码中。每次更改临时训练代码都要执行这个操作。所以，可以通过改变bionemo_train代码，并同步到真实训练代码中，以实现**改变lora的目标层**或者改变其他训练逻辑。~~
+将临时训练代码同步到真正的训练代码中。每次更改临时训练代码都要执行这个操作。可以通过改变bionemo_train代码并同步到真实训练代码，以改变lora配置。
 
 ## 研究阶段5：超参数优化
 可以使用optuna库的自动调参框架。
