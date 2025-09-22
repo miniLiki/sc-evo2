@@ -1,12 +1,13 @@
-# sc-evo2
+<img width="2560" height="1440" alt="20250908_刘思逸_工作总结_01" src="https://github.com/user-attachments/assets/87eecd66-9c8e-4fa1-95be-d295d418b75d" /># sc-evo2
 
 # 一、任务简介
   
-  该任务旨在使用构建高质量的甘蔗数据集对Evo2模型进行微调，以建立用于**甘蔗**领域的基因组**生成**任务**大模型**。任务**近一点的目标**是把原始数据喂给Evo2，加上各种trick，训练一个效果还不错的甘蔗模型；**远一点的目标**是提出一个benchmark/范式：我们自己定义甘蔗数据集的制作方式、评估方式，并给出训练好的模型。第二、三章（**任务进度、代码运行**）主要围绕近一点的目标来讲。第四章（**展望**）讲远一点的目标。
+  该任务旨在使用构建高质量的甘蔗数据集对Evo2模型进行微调，以建立用于**甘蔗**领域的基因组**生成**任务**大模型**。任务**近一点的目标**是把原始数据喂给Evo2，加上各种trick，训练一个效果还不错的甘蔗模型；**远一点的目标**是提出一个benchmark/范式：我们自己定义甘蔗数据集的制作方式、评估方式，并给出训练好的模型。
  
  # 二、任务进度
  任务进度见下图。
- ![技术路线](https://github.com/user-attachments/assets/ea22ae84-346f-4b62-a752-dd09bdac7ffa)
+![Uploading 20250908_刘思逸_工作总结_01.png…]()
+
 
 ## 任务：
 有两个任务：下一个词预测（生成）和调控元件识别。由于Evo2是基于自回归建模，所以调控元件识别本质上也是生成式的打分，所以可以先完成 数据集制作比较简单的生成任务，看看效果。
@@ -60,13 +61,13 @@ data_ana.py                      # 数据分析并绘图的示例
 但这样有一个缺点：现在已经证明了Evo2可以完成基因组的通用模式识别任务，我们是将Evo2作为Base Model来做SFT，最关心的应该是如何完成表征迁移，而不是重构陌生的数据结构进行训练。所以我觉得要在做数据的时候要权衡 有效数据的整合和对齐。
 
 
-数据分析及可视化：位于~/workspace/data_ana.py。这只是一个示例，用的只是虚拟数据。
+数据分析及可视化：位于~/workspace/data_ana.py。这只是一个示例。
 
 
-## 研究阶段2：实现Evo2微调
+## 研究阶段2：实现Evo2预测
 Evo2的直接微调可以参考[教程](https://github.com/NVIDIA/bionemo-framework/blob/ca16c2acf9bf813d020b6d1e2d4e1240cfef6a69/docs/docs/user-guide/examples/bionemo-evo2/fine-tuning-tutorial.ipynb)实现。这里的任务就是下一个词预测，并且训练的逻辑基本遵循Evo2论文。
 
-我之前在代码中完成了Lora集成，而9月初的Evo2官方已经集成了Lora微调功能，所以可以直接参考官方实现，不一定用我的代码。
+**我之前在代码中完成了Lora集成，而9月初的Evo2官方已经集成了Lora微调功能，所以可以直接参考官方实现，不一定用我的代码：**
 <img width="1440" height="330" alt="21607b02d2bed5d71e68bc85b3879abd" src="https://github.com/user-attachments/assets/5275062d-99ae-44eb-adc4-a20616554282" />
 
 我的运行在~/workspace/mapping/finetuning.ipynb文件前半部分实现，即命令：
@@ -75,6 +76,8 @@ Evo2的直接微调可以参考[教程](https://github.com/NVIDIA/bionemo-framew
 如果训练时torch报错权重无法更改，运行finetuning.ipynb中的：
 !cp /workspace/hyena_modified.py /usr/local/lib/python3.12/dist-packages/nemo/collections/llm/gpt/model/hyena.py
 在使用之前，从[huggingface](https://huggingface.co/arcinstitute/savanna_evo2_1b_base/tree/main)下载模型并保存到~/workspace/mapping/savanna_evo2_1b_base文件夹，也可以像[教程](https://github.com/NVIDIA/bionemo-framework/blob/ca16c2acf9bf813d020b6d1e2d4e1240cfef6a69/docs/docs/user-guide/examples/bionemo-evo2/fine-tuning-tutorial.ipynb)一样直接在代码中下载。
+
+实验发现消融lora对性能几乎没有影响，但会降低显存使用。
 
 ## 研究阶段3：设计评估指标并可视化
 这里用的也是切割的数据逐段输入gpu，否则会报显存。由于第一步重新下载了数据，所以这一步也要重新做一下：代码和切割后的数据和注释文档放在~/workspace/mapping/sequence_truncation/。
@@ -165,5 +168,6 @@ os.environ['USERNAME'] = 'user'
  
  我是在Docker容器上运行的。但影响服务器的安全。如果不使用Docker，也可以尝试按照[bionemo官网文件](https://github.com/NVIDIA/bionemo-framework/blob/main/Dockerfile)配置环境。
 
+朱博士的一页ppt：
 <img width="712" alt="9ec4981707003b062d43d377685f48f2" src="https://github.com/user-attachments/assets/201581b7-b13c-48de-8a40-027b3bfa25ba" />
 
