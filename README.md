@@ -1,4 +1,4 @@
-<img width="2560" height="1440" alt="20250908_刘思逸_工作总结_01" src="https://github.com/user-attachments/assets/87eecd66-9c8e-4fa1-95be-d295d418b75d" /># sc-evo2
+
 
 # 一、任务简介
   
@@ -6,7 +6,7 @@
  
  # 二、任务进度
  任务进度见下图。
-![Uploading 20250908_刘思逸_工作总结_01.png…]()
+<img width="2560" height="1440" alt="20250908_刘思逸_工作总结_01" src="https://github.com/user-attachments/assets/87eecd66-9c8e-4fa1-95be-d295d418b75d" /># sc-evo2
 
 
 ## 任务：
