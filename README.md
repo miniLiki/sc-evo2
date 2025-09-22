@@ -6,7 +6,8 @@
  
  # 二、任务进度
  任务进度见下图。
-<img width="2560" height="1440" alt="20250908_刘思逸_工作总结_01(1)" src="https://github.com/user-attachments/assets/4899c611-9dee-4381-a1a8-27346d343e2a" />
+<img width="2560" height="1440" alt="20250908_刘思逸_工作总结_01(2)" src="https://github.com/user-attachments/assets/f3b2b39e-5604-4555-9e59-8ccb17ddddd1" />
+
 
 
 
